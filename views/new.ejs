@@ -34,7 +34,7 @@
       <input type="text" name="title" id="title" /> <br />
 
       <label for="author">post author:</label>
-      <input type="text" name="author" id="author" /> <br />
+      <input type="text" name="author" id="author" value="<%= user %>" /> <br />
 
       <label for="body">post body:</label>
       <textarea name="body" id="body"></textarea> <br />
@@ -63,22 +63,21 @@
           explicit,
         };
 
-        console.log(payload);
-
-        // fetch("<%= api %>/?key=<%= key %>", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(payload),
-        // })
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     console.log("Success:", data);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error:", error);
-        //   });
+        fetch("<%= api %>/?key=<%= key %>", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert("new post created!");
+            location.reload()
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
     </script>
   </body>

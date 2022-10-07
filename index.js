@@ -14,18 +14,26 @@ const KEY = process.env.API_KEY;
 
 app.use(cors());
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+const admins = ["nehan.khan779@gmail.com", "nehanyaser@gmail.com"];
+
 function isLoggedIn(req, res, next) {
   if (req.user) {
-    if (req.user.email === "nehanyaser@gmail.com") {
+    if (admins.includes(req.user.email) === true) {
       next();
-    } else if (req.user.email !== "nehanyaser@gmail.com") {
+    } else if (admins.includes(req.user.email) === false) {
       req.logout(() => {
         req.session.destroy();
         res.send("You are not an admin!");
@@ -85,7 +93,12 @@ app.get("/post/:id", (req, res) => {
       if (post.length < 1) {
         res.status(404).json({ message: "post not found" });
       } else {
-        res.send(post);
+        const title = post[0].title;
+        const author = post[0].author;
+        const timestamp = post[0].timestamp;
+        const body = post[0].body;
+
+        res.render("post", { title, author, timestamp, body });
       }
     })
     .catch((err) => console.log(err));
@@ -100,14 +113,27 @@ app.get("/admin/posts", isLoggedIn, (req, res) => {
     .then((response) => {
       const data = response.data;
 
-      res.send(data);
+      res.render('posts', { data, api: API, key: KEY })
     })
     .catch((err) => console.log(err));
 });
 
-// form to create a new post
+app.get("/posts", (req, res) => {
+  axios
+    .get(API, {
+      params: { key: KEY },
+    })
+    .then((response) => {
+      const data = response.data;
+
+      res.render('index', { data })
+    })
+    .catch((err) => console.log(err));
+});
+
+// create a new post
 app.get("/admin/new", isLoggedIn, (req, res) => {
-  res.render("new", { api: API, key: KEY });
+  res.render("new", { api: API, key: KEY, user: req.user.displayName });
 });
 
 app.listen(PORT, () => {
