@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6.2.0-10/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+      tinymce.init({
+        selector: '#body',
+        plugins: [
+          'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+          'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+          'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+        ],
+        toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+      });
+    </script>
+
+    <style>
+      .tox-notifications-container  {
+        display: none;
+      }
+    </style>
+
+    <title>create a new blog post</title>
+  </head>
+  <body>
+    <div class="form">
+      <label for="title">post title:</label>
+      <input type="text" name="title" id="title" /> <br />
+
+      <label for="author">post author:</label>
+      <input type="text" name="author" id="author" /> <br />
+
+      <label for="body">post body:</label>
+      <textarea name="body" id="body"></textarea> <br />
+
+      <label for="explicit">explicit flag:</label>
+      <select name="explicit" id="explicit">
+        <option value="false">false</option>
+        <option value="true">true</option>
+      </select>
+      <br />
+
+      <button onclick="submitHandler()">create post</button>
+    </div>
+
+    <script>
+      function submitHandler() {
+        const title = document.getElementById("title").value;
+        const author = document.getElementById("author").value;
+        const body = tinymce.get("body").getContent();
+        const explicit = document.getElementById("explicit").value;
+
+        const payload = {
+          title,
+          author,
+          body,
+          explicit,
+        };
+
+        console.log(payload);
+
+        // fetch("<%= api %>/?key=<%= key %>", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(payload),
+        // })
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     console.log("Success:", data);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error:", error);
+        //   });
+      }
+    </script>
+  </body>
+</html>
