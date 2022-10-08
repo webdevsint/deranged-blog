@@ -7,13 +7,15 @@
     <title>all posts - admin panel</title>
 </head>
 <body>
-    admin panel <a href="/admin/new">create new post</a>
+    all posts: <a href="/admin/new">create new post</a>
 
     <% for(i=0; i<data.length; i++) {%>
         <div class="container">
             <a href="/post/<%= data[i].id %>"><%= i+1 %>. <%= data[i].title %></a> <span onclick="deleteHandler('<%= i %>')" style="margin-left: 2rem;">delete</span>
         </div>
      <% } %>
+
+     <br><a href="/admin">← admin panel</a>
     
      <script>
         function deleteHandler(index) {

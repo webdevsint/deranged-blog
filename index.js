@@ -68,7 +68,7 @@ app.get(
 app.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/admin/posts",
+    successRedirect: "/admin",
     failureRedirect: "/auth/google/failure",
   })
 );
@@ -131,6 +131,10 @@ app.get("/post/:id", (req, res) => {
 });
 
 // admin functions
+app.get("/admin", isLoggedIn, (req, res) => {
+  res.render('admin', { user: req.user.given_name })
+})
+
 app.get("/admin/posts", isLoggedIn, (req, res) => {
   axios
     .get(API, {
