@@ -1,7 +1,7 @@
 {
   "name": "deranged-blog",
   "version": "1.0.0",
-  "description": "the official deranged blog",
+  "description": "an open-source personal blog",
   "main": "index.js",
   "scripts": {
     "start": "node index",

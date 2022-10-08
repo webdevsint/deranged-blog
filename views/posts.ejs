@@ -4,23 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>all posts - admin panel</title>
+    <link rel="stylesheet" href="/styles/posts.css">
+    <title>all posts</title>
 </head>
 <body>
-    admin panel <a href="/admin/new">create new post</a>
 
-    <% for(i=0; i<data.length; i++) {%>
-        <div class="container">
-            <a href="/post/<%= data[i].id %>"><%= i+1 %>. <%= data[i].title %></a> <span onclick="deleteHandler('<%= i %>')" style="margin-left: 2rem;">delete</span>
-        </div>
-     <% } %>
-    
-     <script>
-        function deleteHandler(index) {
-            fetch(`<%= api %>/?key=<%= key %>&index=${index}`, { method: 'DELETE'})
-                .then(res => res.json())
-                .then(res => location.reload())
-        }
-     </script>
+    <main>
+        <h2>all blog posts:</h2>
+        <a href="/posts?sort=<%= sortMethod %>" style="text-decoration: underline;">sort by <%= sortMethod %></a>
+
+        <% for(i=0; i<data.length; i++) { %>
+            <div class="post">
+                <a href="/post/<%= data[i].id %>">
+                    <div>
+                        <% data[i].explicit === 'true' ? warning = '(explicit)' : warning = '' %>
+                        <h3> <%= data[i].title %> <sup><%= warning %></sup></h3>
+                        <p>Created: <%= data[i].timestamp %></p>
+                    </div>
+                </a>
+            </div>
+         <% } %>
+    </main>
+
+     <div class="footer">
+            <p>the <b>deranged blog</b> <br> by <a href="https://instagram.com/nehan_yaser/" target="_blank">nehan yaser</a>.</p>
+     </div>
 </body>
 </html>

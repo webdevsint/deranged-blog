@@ -44,6 +44,11 @@ function isLoggedIn(req, res, next) {
   }
 }
 
+app.get("/", (req, res) => {
+  res.send("welcome to the deranged blog api. are you an admin ?");
+});
+
+// authentication
 app.get("/login", (req, res) => {
   res.redirect("/auth/google");
 });
@@ -55,7 +60,6 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// authentication
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
@@ -73,11 +77,33 @@ app.get("/auth/google/failure", (req, res) => {
   res.send("Failed to authenticate..");
 });
 
-app.get("/", (req, res) => {
-  res.send("welcome to the deranged blog api. are you an admin ?");
+// blog
+app.get("/posts", (req, res) => {
+  const sortPosts = req.query.sort;
+
+  console.log(sortPosts);
+
+  axios
+    .get(API, {
+      params: { key: KEY },
+    })
+    .then((response) => {
+      let data;
+      let sortMethod;
+
+      if (sortPosts === 'old') {
+        data = response.data;
+        sortMethod = 'new'
+      } else {
+        data = response.data.reverse();
+        sortMethod = 'old'
+      }
+
+      res.render("posts", { data, sortMethod });
+    })
+    .catch((err) => console.log(err));
 });
 
-// returns a specific post
 app.get("/post/:id", (req, res) => {
   const id = req.params.id;
 
@@ -104,7 +130,7 @@ app.get("/post/:id", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// returns all posts
+// admin functions
 app.get("/admin/posts", isLoggedIn, (req, res) => {
   axios
     .get(API, {
@@ -113,29 +139,15 @@ app.get("/admin/posts", isLoggedIn, (req, res) => {
     .then((response) => {
       const data = response.data;
 
-      res.render('posts', { data, api: API, key: KEY })
+      res.render("posts_admin", { data, api: API, key: KEY });
     })
     .catch((err) => console.log(err));
 });
 
-app.get("/posts", (req, res) => {
-  axios
-    .get(API, {
-      params: { key: KEY },
-    })
-    .then((response) => {
-      const data = response.data;
-
-      res.render('index', { data })
-    })
-    .catch((err) => console.log(err));
-});
-
-// create a new post
 app.get("/admin/new", isLoggedIn, (req, res) => {
   res.render("new", { api: API, key: KEY, user: req.user.displayName });
 });
 
 app.listen(PORT, () => {
-  console.log(`web server listening on port ${PORT}`);
+  console.log(`server started @ http://localhost:${PORT}/`);
 });
