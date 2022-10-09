@@ -2,7 +2,7 @@ const session = require("express-session");
 const passport = require("passport");
 const express = require("express");
 const axios = require("axios");
-const path = require('path');
+const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
 require("./auth");
@@ -46,7 +46,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve('./views/index.html'))
+  res.sendFile(path.resolve("./views/index.html"));
 });
 
 // authentication
@@ -57,7 +57,7 @@ app.get("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   req.logout(() => {
     req.session.destroy();
-    res.send("Logged out...");
+    res.redirect('/')
   });
 });
 
@@ -80,35 +80,11 @@ app.get("/auth/google/failure", (req, res) => {
 
 // blog
 app.get("/posts", (req, res) => {
-  res.sendFile(path.resolve('./views/posts.html'))
+  res.sendFile(path.resolve("./views/posts.html"));
 });
 
 app.get("/post/:id", (req, res) => {
-  // const id = req.params.id;
-
-  // axios
-  //   .get(API, {
-  //     params: { key: KEY },
-  //   })
-  //   .then((response) => {
-  //     const data = response.data;
-
-  //     const post = data.filter((item) => item.id === id);
-
-  //     if (post.length < 1) {
-  //       res.status(404).json({ message: "post not found" });
-  //     } else {
-  //       const title = post[0].title;
-  //       const author = post[0].author;
-  //       const timestamp = post[0].timestamp;
-  //       const body = post[0].body;
-
-  //       res.render("post", { title, author, timestamp, body });
-  //     }
-  //   })
-  //   .catch((err) => console.log(err));
-
-  res.sendFile(path.resolve('./views/post.html'))
+  res.sendFile(path.resolve("./views/post.html"));
 });
 
 // admin functions
@@ -117,7 +93,7 @@ app.get("/admin", isLoggedIn, (req, res) => {
 });
 
 app.get("/admin/posts", isLoggedIn, (req, res) => {
-  res.sendFile(path.resolve('./views/posts_admin.html'))
+  res.sendFile(path.resolve("./views/posts_admin.html"));
 });
 
 app.get("/admin/new", isLoggedIn, (req, res) => {

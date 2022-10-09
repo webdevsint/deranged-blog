@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin</title>
-</head>
-<body>
-    <h1>Hi, <%= user %>!</h1>
-    
-    admin panel:
-    <ul>
-        <li><a href="/admin/posts">all posts</a></li>
-        <li><a href="/admin/new">create new post</a></li>
-        <li><a href="/logout">logout</a></li>
-    </ul>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/admin.css">
+    <title>admin panel</title>
+  </head>
+  <body>
+    <h1 style="margin-bottom: 1.5rem">hi <%= user %></h1>
+
+    <b>quick links:</b>
+    <p><a href="/admin/posts">- all posts</a></p>
+    <p><a href="/admin/new">- create new post</a></p>
+    <p><a href="/logout">- logout</a></p>
+  </body>
 </html>

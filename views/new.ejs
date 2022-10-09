@@ -43,25 +43,26 @@
           "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
       });
     </script>
-
-    <style>
-      .tox-notifications-container {
-        display: none;
-      }
-    </style>
-
     <title>create a new blog post</title>
   </head>
   <body>
+    <h2>create a new post</h2>
     <div class="form">
       <label for="title">post title:</label>
-      <input type="text" name="title" id="title" /> <br />
+      <input type="text" name="title" id="title" required /> <br />
 
       <label for="author">post author:</label>
-      <input type="text" name="author" id="author" value="<%= user %>" /> <br />
+      <input
+        type="text"
+        name="author"
+        id="author"
+        value="<%= user %>"
+        required
+      />
+      <br />
 
       <label for="body">post body:</label>
-      <textarea name="body" id="body"></textarea> <br />
+      <textarea name="body" id="body" required></textarea> <br />
 
       <label for="explicit">explicit flag:</label>
       <select name="explicit" id="explicit">
@@ -69,9 +70,53 @@
         <option value="true">true</option>
       </select>
       <br />
+      <br />
 
-      <button onclick="submitHandler()">create post</button>
+      <button onclick="submitHandler()" type="submit">create post</button> or
+
+      <a href="/admin" class="back">cancel</a>
     </div>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+        text-transform: lowercase;
+      }
+
+      body {
+        padding: 1.5rem;
+      }
+
+      h2 {
+        margin-bottom: 1.5rem;
+      }
+
+      input {
+        margin-bottom: 10px;
+        margin-left: 10px;
+      }
+
+      button {
+        padding: 4px 6px;
+        outline: none;
+        border: 2px solid black;
+        background: white;
+        cursor: pointer;
+      }
+      
+      a {
+        color: black;
+      }
+
+      .tox-notifications-container {
+        display: none;
+      }
+    </style>
 
     <script>
       function submitHandler() {
@@ -80,28 +125,32 @@
         const body = tinymce.get("body").getContent();
         const explicit = document.getElementById("explicit").value;
 
-        const payload = {
-          title,
-          author,
-          body,
-          explicit,
-        };
+        if (title === "" || author === "" || body === "") {
+          alert("please fill up all the fields");
+        } else {
+          const payload = {
+            title,
+            author,
+            body,
+            explicit,
+          };
 
-        fetch("<%= api %>/?key=<%= key %>", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            alert("new post created!");
-            location.reload();
+          fetch("<%= api %>/?key=<%= key %>", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
           })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+            .then((response) => response.json())
+            .then((data) => {
+              alert("new post created!");
+              location.reload();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
       }
     </script>
   </body>
