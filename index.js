@@ -2,6 +2,7 @@ const session = require("express-session");
 const passport = require("passport");
 const express = require("express");
 const axios = require("axios");
+const path = require('path');
 const cors = require("cors");
 require("dotenv").config();
 require("./auth");
@@ -45,7 +46,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-  res.send("welcome to the deranged blog api. are you an admin ?");
+  res.render("index");
 });
 
 // authentication
@@ -79,29 +80,7 @@ app.get("/auth/google/failure", (req, res) => {
 
 // blog
 app.get("/posts", (req, res) => {
-  const sortPosts = req.query.sort;
-
-  console.log(sortPosts);
-
-  axios
-    .get(API, {
-      params: { key: KEY },
-    })
-    .then((response) => {
-      let data;
-      let sortMethod;
-
-      if (sortPosts === 'old') {
-        data = response.data;
-        sortMethod = 'new'
-      } else {
-        data = response.data.reverse();
-        sortMethod = 'old'
-      }
-
-      res.render("posts", { data, sortMethod });
-    })
-    .catch((err) => console.log(err));
+  res.sendFile(path.resolve('./views/posts.html'))
 });
 
 app.get("/post/:id", (req, res) => {
@@ -132,20 +111,11 @@ app.get("/post/:id", (req, res) => {
 
 // admin functions
 app.get("/admin", isLoggedIn, (req, res) => {
-  res.render('admin', { user: req.user.given_name })
-})
+  res.render("admin", { user: req.user.given_name });
+});
 
 app.get("/admin/posts", isLoggedIn, (req, res) => {
-  axios
-    .get(API, {
-      params: { key: KEY },
-    })
-    .then((response) => {
-      const data = response.data;
-
-      res.render("posts_admin", { data, api: API, key: KEY });
-    })
-    .catch((err) => console.log(err));
+  res.sendFile(path.resolve('./views/posts_admin.html'))
 });
 
 app.get("/admin/new", isLoggedIn, (req, res) => {

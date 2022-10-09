@@ -44,12 +44,20 @@ main {
 
 .post:hover {
   background: #f0efef;
+  transition: 0.1s;
+}
+
+.status {
+  margin-top: 1rem;
+}
+.back {
+  padding: 1rem;
+}
+.back:hover {
+  text-decoration: underline;
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100vw;
   padding: 1.5rem;
   background: white;
