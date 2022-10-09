@@ -84,29 +84,31 @@ app.get("/posts", (req, res) => {
 });
 
 app.get("/post/:id", (req, res) => {
-  const id = req.params.id;
+  // const id = req.params.id;
 
-  axios
-    .get(API, {
-      params: { key: KEY },
-    })
-    .then((response) => {
-      const data = response.data;
+  // axios
+  //   .get(API, {
+  //     params: { key: KEY },
+  //   })
+  //   .then((response) => {
+  //     const data = response.data;
 
-      const post = data.filter((item) => item.id === id);
+  //     const post = data.filter((item) => item.id === id);
 
-      if (post.length < 1) {
-        res.status(404).json({ message: "post not found" });
-      } else {
-        const title = post[0].title;
-        const author = post[0].author;
-        const timestamp = post[0].timestamp;
-        const body = post[0].body;
+  //     if (post.length < 1) {
+  //       res.status(404).json({ message: "post not found" });
+  //     } else {
+  //       const title = post[0].title;
+  //       const author = post[0].author;
+  //       const timestamp = post[0].timestamp;
+  //       const body = post[0].body;
 
-        res.render("post", { title, author, timestamp, body });
-      }
-    })
-    .catch((err) => console.log(err));
+  //       res.render("post", { title, author, timestamp, body });
+  //     }
+  //   })
+  //   .catch((err) => console.log(err));
+
+  res.sendFile(path.resolve('./views/post.html'))
 });
 
 // admin functions
