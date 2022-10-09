@@ -17,8 +17,13 @@ a {
   width: fit-content;
 }
 
-main {
+h2, main {
   padding: 1.5rem;
+  padding-bottom: 0;
+}
+
+p span {
+    text-decoration: underline;
 }
 
 .post {
@@ -48,13 +53,7 @@ main {
 }
 
 .status {
-  margin-top: 1rem;
-}
-.back {
-  padding: 1.5rem;
-}
-.back:hover {
-  text-decoration: underline;
+  margin: 1rem 0;
 }
 
 .footer {

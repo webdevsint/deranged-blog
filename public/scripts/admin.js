@@ -13,7 +13,7 @@ if (sort === "old") {
 }
 
 fetch(API)
-  .then((res) => (res.status !== 200 ? (error = true) : res.json()))
+  .then((res) => res.json())
   .then((data) => {
     if (sort === "old") {
       data = data;
@@ -24,25 +24,35 @@ fetch(API)
     if (error) {
       status.innerHTML = "there was an error";
     } else {
-      for (i = 0; i < data.length; i++) {
+      data.forEach((element, index) => {
         const divPost = document.createElement("div");
         divPost.classList.add("post");
 
         const div = document.createElement("div");
         const anchor = document.createElement("a");
-        anchor.href = `/post/${data[i].id}`;
+        anchor.href = `/post/${data[index].id}`;
 
         const h3 = document.createElement("h3");
         const sup = document.createElement("sup");
 
-        if (data[i].explicit === "true") {
+        if (data[index].explicit === "true") {
           sup.innerHTML = "(explicit)";
         } else sup.innerHTML = "";
 
         const paragraph = document.createElement("p");
+        const btn = document.createElement("button");
+        btn.innerText = "delete post";
+        btn.onclick = () => {
+          fetch(
+            `https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOe4rPFV&index=${index}`,
+            { method: "DELETE" }
+          )
+            .then((res) => res.json())
+            .then((data) => location.reload());
+        };
 
-        h3.innerHTML = data[i].title;
-        paragraph.innerHTML = `Created: ${data[i].timestamp}`;
+        h3.innerHTML = data[index].title;
+        paragraph.innerHTML = `Created: ${data[index].timestamp}`;
 
         h3.appendChild(sup);
         div.appendChild(h3);
@@ -50,9 +60,10 @@ fetch(API)
 
         anchor.appendChild(div);
         divPost.appendChild(anchor);
+        divPost.appendChild(btn);
 
         document.querySelector("main").appendChild(divPost);
-      }
+      });
 
       status.style.display = "none";
     }

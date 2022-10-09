@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/index.css" />
+    <title>the deranged blog</title>
+  </head>
+  <body>
+    <h2>welcome to the deranged blog</h2>
+
+    <main>
+      <h3>contact me:</h3>
+      <p>email: <a href="mailto:nehan.khan779@gmail.com"><span>nehan.khan779@gmail.com</span></a></p>
+      <p>github: <a href="https://github.com/webdevsint" target="_blank"><span>webdevsint</span></a></p>
+
+      <br />
+
+      <h3>latest posts:</h3>
+
+      <div class="posts">
+        <div class="status">fetching posts...</div>
+      </div>
+    </main>
+
+    <a href="/posts" style="text-decoration: underline; padding: 1.5rem"
+      >all posts</a
+    >
+
+    <div class="footer">
+      <p>
+        the <b>deranged blog</b> <br />
+        by
+        <a href="https://instagram.com/nehan_yaser/" target="_blank"
+          >nehan yaser</a
+        >.
+      </p>
+    </div>
+
+    <script>
+      const status = document.querySelector(".status");
+      let error;
+
+      fetch(
+        "https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOe4rPFV"
+      )
+        .then((res) => (res.status !== 200 ? (error = true) : res.json()))
+        .then((data) => {
+          data = data.reverse();
+          data.length = 2;
+
+          if (error) {
+            status.innerHTML = "there was an error";
+          } else {
+            for (i = 0; i < data.length; i++) {
+              const divPost = document.createElement("div");
+              divPost.classList.add("post");
+
+              const div = document.createElement("div");
+              const anchor = document.createElement("a");
+              anchor.href = `/post/${data[i].id}`;
+
+              const h3 = document.createElement("h3");
+              const sup = document.createElement("sup");
+
+              if (data[i].explicit === "true") {
+                sup.innerHTML = "(explicit)";
+              } else sup.innerHTML = "";
+
+              const paragraph = document.createElement("p");
+
+              h3.innerHTML = data[i].title;
+              paragraph.innerHTML = `Created: ${data[i].timestamp}`;
+
+              h3.appendChild(sup);
+              div.appendChild(h3);
+              div.appendChild(paragraph);
+
+              anchor.appendChild(div);
+              divPost.appendChild(anchor);
+
+              document.querySelector(".posts").appendChild(divPost);
+            }
+
+            status.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

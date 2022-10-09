@@ -46,7 +46,7 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.sendFile(path.resolve('./views/index.html'))
 });
 
 // authentication
