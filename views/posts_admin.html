@@ -10,11 +10,11 @@
   <body>
     <main>
       <h2>all blog posts:</h2>
-      <a href="/posts?sort=sortMethod" style="text-decoration: underline"
-        >sort by sortMethod</a
+      <a href="/posts?sort=old" style="text-decoration: underline" class="sort"
+        >sort by old</a
       >
 
-      <div class="loading">fetching posts...</div>
+      <div class="status">fetching posts...</div>
     </main>
     <a href="/" class="back">← home</a>
 
@@ -29,68 +29,20 @@
     </div>
 
     <style>
-        button{
-          background: white;
-            padding: 5px;
-            margin: 8px 0;
-            border: 2px solid black;
-            cursor: pointer;
-        }
+      button {
+        background: white;
+        padding: 5px;
+        margin: 8px 0;
+        border: 2px solid black;
+        cursor: pointer;
+      }
 
-        button:hover {
-            background: #de7b7b;
-            transition: 0.1s;
-        }
+      button:hover {
+        background: #de7b7b;
+        transition: 0.1s;
+      }
     </style>
 
-    <script>
-      fetch(API)
-        .then((res) => res.json())
-        .then((data) => {
-          data.forEach((element, index) => {
-            const divPost = document.createElement("div");
-            divPost.classList.add("post");
-
-            const div = document.createElement("div");
-            const anchor = document.createElement("a");
-            anchor.href = `/post/${data[index].id}`;
-
-            const h3 = document.createElement("h3");
-            const sup = document.createElement("sup");
-
-            if (data[index].explicit === "true") {
-              sup.innerHTML = "(explicit)";
-            } else sup.innerHTML = "";
-
-            const paragraph = document.createElement("p");
-            const btn = document.createElement("button");
-            btn.innerText = "delete post";
-            btn.onclick = () => {
-              fetch(
-                `https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOe4rPFV&index=${index}`,
-                { method: "DELETE" }
-              )
-                .then((res) => res.json())
-                .then((data) => location.reload());
-            };
-
-            h3.innerHTML = data[index].title;
-            paragraph.innerHTML = `Created: ${data[index].timestamp}`;
-
-            h3.appendChild(sup);
-            div.appendChild(h3);
-            div.appendChild(paragraph);
-
-            anchor.appendChild(div);
-            divPost.appendChild(anchor);
-            divPost.appendChild(btn);
-
-            document.querySelector("main").appendChild(divPost);
-          });
-
-          document.querySelector(".loading").style.display = "none";
-        })
-        .catch((err) => alert(err));
-    </script>
+    <script src="./scripts/posts_admin.js"></script>
   </body>
 </html>
