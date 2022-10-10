@@ -9,7 +9,7 @@ let sort = params.sort;
 
 if (sort === "old") {
   document.querySelector(".sort").innerHTML = "sort by new";
-  document.querySelector(".sort").href = "/posts?sort=new";
+  document.querySelector(".sort").href = "/admin/posts?sort=new";
 }
 
 fetch(API)

@@ -1,12 +1,29 @@
 const status = document.querySelector(".status");
 let error;
 
-fetch(`https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOehcid`)
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+
+let sort = params.sort;
+
+if (sort === "old") {
+  document.querySelector(".sort").innerHTML = "sort by new";
+  document.querySelector(".sort").href = "/posts?sort=new";
+}
+
+fetch(API)
   .then((res) => res.json())
   .then((data) => {
     if (error) {
       status.innerHTML = "there was an error";
     } else {
+      if (sort === "old") {
+        data = data;
+      } else {
+        data = data.reverse();
+      }
+
       if (data.length > 0) {
         data.forEach((element, index) => {
           const divPost = document.createElement("div");
@@ -27,7 +44,10 @@ fetch(`https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOehcid`)
           const btn = document.createElement("button");
           btn.innerText = "delete post";
           btn.onclick = () => {
-            fetch(API, { method: "DELETE" })
+            fetch(
+              `https://dblog-db.nehanyaser.repl.co/document/posts?key=WCUEWOehcid&index=${index}`,
+              { method: "DELETE" }
+            )
               .then((res) => res.json())
               .then((data) => location.reload());
           };
