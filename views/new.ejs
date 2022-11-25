@@ -45,31 +45,47 @@
     </script>
     <title>create a new blog post</title>
   </head>
+
   <body>
     <h2>create a new post</h2>
     <div class="form">
-      <label for="title">post title:</label>
-      <input type="text" name="title" id="title" required /> <br />
+      <div>
+        <input
+          placeholder="post title"
+          type="text"
+          name="title"
+          id="title"
+          required
+          style="font-size: 25px"
+        />
+      </div>
 
-      <label for="author">post author:</label>
-      <input
-        type="text"
-        name="author"
-        id="author"
-        value="<%= user %>"
-        required
-      />
+      <div>
+        by
+        <input
+          placeholder="post author"
+          type="text"
+          name="author"
+          id="author"
+          value="<%= user %>"
+          required
+          style="font-size: 16px"
+        />
+      </div>
+
       <br />
-
-      <label for="body">post body:</label>
-      <textarea name="body" id="body" required></textarea> <br />
 
       <label for="explicit">explicit flag:</label>
       <select name="explicit" id="explicit">
         <option value="false">false</option>
         <option value="true">true</option>
       </select>
+
       <br />
+      <br />
+
+      <textarea name="body" id="body" required></textarea> <br />
+
       <br />
 
       <button onclick="submitHandler()" type="submit">create post</button> or
@@ -98,7 +114,9 @@
 
       input {
         margin-bottom: 10px;
-        margin-left: 10px;
+        border: none;
+        border-bottom: 2px solid black;
+        outline: none;
       }
 
       button {
@@ -108,7 +126,12 @@
         background: white;
         cursor: pointer;
       }
-      
+
+      button:hover {
+        background: black;
+        color: white;
+      }
+
       a {
         color: black;
       }
