@@ -43,11 +43,6 @@ main {
   text-overflow: ellipsis;
 }
 
-.post:hover {
-  background: #f0efef;
-  transition: 0.1s;
-}
-
 .status {
   margin-top: 1rem;
 }
