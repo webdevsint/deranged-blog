@@ -142,6 +142,11 @@
     </style>
 
     <script>
+    
+      window.addEventListener("beforeunload", (event) => {
+         event.returnValue = true;
+      });
+    
       function submitHandler() {
         const title = document.getElementById("title").value;
         const author = document.getElementById("author").value;
